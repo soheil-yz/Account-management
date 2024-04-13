@@ -19,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         backgroundColor: Colors.indigo[200],
         floatingActionButton: FloatingActionButton(
-          backgroundColor: KPurpleColor,
+            backgroundColor: KPurpleColor,
             elevation: 0,
             onPressed: () {},
             child: const Icon(
@@ -29,32 +29,67 @@ class _HomeScreenState extends State<HomeScreen> {
           width: double.infinity,
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 20,top: 20,left: 5),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: SearchBarAnimation(
-                          textEditingController: SearchController,
-                          isOriginalAnimation: false,
-                          trailingWidget: Icon(Icons.search),
-                          secondaryButtonWidget: Icon(Icons.search_off),
-                          buttonWidget: Icon(Icons.search),
-                          buttonElevation: 0,
-                          ),
-                        ),
-                       const  SizedBox(width: 10,),
-                      const Text('تراکنش ها'),
-                      
-                  ],
-                ),
-              ),
-              //SvgPicture.asset('assets/images/photo.svg'),
-
+              HeaderWidget(SearchController: SearchController),
+              const Expanded(child: EmptyWight())
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class HeaderWidget extends StatelessWidget {
+  const HeaderWidget({
+    super.key,
+    required this.SearchController,
+  });
+
+  final TextEditingController SearchController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 20, top: 20, left: 5),
+      child: Row(
+        children: [
+          Expanded(
+            child: SearchBarAnimation(
+              textEditingController: SearchController,
+              isOriginalAnimation: false,
+              trailingWidget: Icon(Icons.search),
+              secondaryButtonWidget: Icon(Icons.search_off),
+              buttonWidget: Icon(Icons.search),
+              buttonElevation: 0,
+            ),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          const Text('Transactions'),
+        ],
+      ),
+    );
+  }
+}
+
+class EmptyWight extends StatelessWidget {
+  const EmptyWight({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+              const Spacer(),
+              SvgPicture.asset(
+                'assets/images/photo.svg',
+                height: 200,
+                width: 150,
+              ),
+              SizedBox(height: 10,),
+              const Text("There is no transaction !"),
+              const Spacer(),
+      ],
     );
   }
 }
