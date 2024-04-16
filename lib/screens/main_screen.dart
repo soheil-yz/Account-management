@@ -1,6 +1,7 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:money_managment/screens/Home_screen.dart';
+import 'package:money_managment/screens/Info_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -29,7 +30,7 @@ class _MainScreenState extends State<MainScreen> {
             );
           } else {
             body = const Center(
-              child: Text("Info"),
+              child: const InfoScreen(),
             );
           }
           setState(() {
