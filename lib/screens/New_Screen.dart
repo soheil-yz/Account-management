@@ -14,7 +14,7 @@ class _NewScreenState extends State<NewScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.indigo[200],
+        //backgroundColor: Colors.indigo[200],
         body: Container(
           width: double.infinity,
           margin: const EdgeInsets.all(20.0),

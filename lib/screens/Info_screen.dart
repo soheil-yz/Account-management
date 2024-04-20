@@ -13,7 +13,7 @@ class _InfoScreenState extends State<InfoScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      backgroundColor: Colors.indigo[200],
+      //backgroundColor: Colors.indigo[200],
       body: SizedBox(
         width: double.infinity,
         child: Column(
