@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:money_managment/Constans.dart';
+import 'package:money_managment/screens/New_Screen.dart';
 import 'package:searchbar_animation/searchbar_animation.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -21,7 +22,9 @@ class _HomeScreenState extends State<HomeScreen> {
         floatingActionButton: FloatingActionButton(
             backgroundColor: KPurpleColor,
             elevation: 0,
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>NewScreen()));
+            },
             child: const Icon(
               Icons.add,
             )),
