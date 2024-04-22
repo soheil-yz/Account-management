@@ -5,11 +5,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:money_managment/Constans.dart';
+import 'package:money_managment/models/Money.dart';
 import 'package:money_managment/screens/New_Screen.dart';
 import 'package:searchbar_animation/searchbar_animation.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+  static List<Money> modeys = [
+    Money(
+        id: 0,
+        price: '2000',
+        date: '2024/27',
+        isReceived: false,
+        title: 'Univercity'),
+    Money(
+        id: 1,
+        price: '2000',
+        date: '2024/27',
+        isReceived: true,
+        title: 'Programming'),
+    Money(
+        id: 2, price: '3000', date: '2024/22', isReceived: false, title: 'gym'),
+    Money(
+        id: 3,
+        price: '44000',
+        date: '2024/21',
+        isReceived: true,
+        title: 'handing out'),
+  ];
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -17,6 +40,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController SearchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -26,8 +50,17 @@ class _HomeScreenState extends State<HomeScreen> {
             backgroundColor: KPurpleColor,
             elevation: 0,
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => NewScreen()));
+              NewScreen.descriptionController.text = '';
+              NewScreen.priceController.text = '';
+              NewScreen.groupId = 0;
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => NewScreen(),
+                ),
+              ).then((value) => setState(() {
+                print('Refresh');
+              },),);
             },
             child: const Icon(
               Icons.add,
@@ -39,9 +72,11 @@ class _HomeScreenState extends State<HomeScreen> {
               HeaderWidget(SearchController: SearchController),
               //const Expanded(child: EmptyWight()),
               Expanded(
-                child: ListView.builder(itemCount : 10 , itemBuilder: (context , index){
-                  return const MyListTileWedget();
-                }),
+                child: ListView.builder(
+                    itemCount: HomeScreen.modeys.length,
+                    itemBuilder: (context, index) {
+                      return MyListTileWedget(index: index);
+                    }),
               ),
             ],
           ),
@@ -52,9 +87,9 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class MyListTileWedget extends StatelessWidget {
-  const MyListTileWedget({
-    super.key,
-  });
+  final int index;
+
+  const MyListTileWedget({super.key, required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -68,12 +103,16 @@ class MyListTileWedget extends StatelessWidget {
               width: 50,
               height: 50,
               decoration: BoxDecoration(
-                color: KRedColor,
+                color: HomeScreen.modeys[index].isReceived
+                    ? KGreenColor
+                    : KRedColor,
                 borderRadius: BorderRadius.circular(15),
               ),
-              child: const Center(
+              child: Center(
                 child: Icon(
-                  Icons.add,
+                  HomeScreen.modeys[index].isReceived
+                      ? Icons.add
+                      : Icons.remove_outlined,
                   color: Colors.white,
                   size: 30,
                 ),
@@ -81,7 +120,7 @@ class MyListTileWedget extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 15),
-              child: Text("Gym"),
+              child: Text(HomeScreen.modeys[index].title),
             ),
             const Spacer(),
             Column(
@@ -90,19 +129,17 @@ class MyListTileWedget extends StatelessWidget {
                   children: [
                     const Text(
                       "Toman ",
-                      style:
-                          TextStyle(fontSize: 15, color: KRedColor),
+                      style: TextStyle(fontSize: 15, color: KRedColor),
                     ),
-                    const Text(
-                      '11000',
-                      style:
-                          TextStyle(fontSize: 15, color: KRedColor),
+                    Text(
+                      HomeScreen.modeys[index].price,
+                      style: TextStyle(fontSize: 15, color: KRedColor),
                     ),
                   ],
                 ),
-                Text('2002/2/2'),
+                Text(HomeScreen.modeys[index].date),
               ],
-            )
+            ),
           ],
         ),
       ),
