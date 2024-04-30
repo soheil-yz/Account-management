@@ -76,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
               HeaderWidget(SearchController: SearchController),
               //const Expanded(child: EmptyWight()),
               Expanded(
-                child: ListView.builder(
+                child: HomeScreen.modeys.isEmpty ? EmptyWight() : ListView.builder(
                     itemCount: HomeScreen.modeys.length,
                     itemBuilder: (context, index) {
                       return GestureDetector(
@@ -84,6 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             showDialog(
                                 context: context,
                                 builder: (context) => AlertDialog(
+                                  title: const Text("Are you sure you want to delete it?" , style: TextStyle(fontSize: 15)),
                                       actions: [
                                         Padding(
                                           padding: EdgeInsets.only(top: 20),
