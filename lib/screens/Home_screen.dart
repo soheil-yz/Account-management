@@ -58,9 +58,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 MaterialPageRoute(
                   builder: (context) => NewScreen(),
                 ),
-              ).then((value) => setState(() {
-                print('Refresh');
-              },),);
+              ).then(
+                (value) => setState(
+                  () {
+                    print('Refresh');
+                  },
+                ),
+              );
             },
             child: const Icon(
               Icons.add,
@@ -75,7 +79,41 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: ListView.builder(
                     itemCount: HomeScreen.modeys.length,
                     itemBuilder: (context, index) {
-                      return MyListTileWedget(index: index);
+                      return GestureDetector(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                      actions: [
+                                        Padding(
+                                          padding: EdgeInsets.only(top: 20),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    HomeScreen.modeys
+                                                        .removeAt(index);
+                                                        Navigator.pop(context);
+                                                  });
+                                                },
+                                                child: Text("YES" , style: TextStyle(color: Colors.black87),),
+                                              ),
+                                              TextButton(  
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text("NO" , style: TextStyle(color: Colors.black87),),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ));
+                          },
+                          child: MyListTileWedget(index: index));
                     }),
               ),
             ],
