@@ -10,10 +10,10 @@ import 'package:money_managment/screens/main_screen.dart';
 class NewScreen extends StatefulWidget {
   const NewScreen({super.key});
   static int groupId = 0;
-  static int soheil = 0;
+  static int index = 0;
   static TextEditingController descriptionController = TextEditingController();
   static TextEditingController priceController = TextEditingController();
-
+  static bool isEditing = false;
   @override
   State<NewScreen> createState() => _NewScreenState();
 }
@@ -30,15 +30,17 @@ class _NewScreenState extends State<NewScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "New transaction",
+              Text(
+                NewScreen.isEditing ? "Edit transaction" : "New transaction",
                 style: TextStyle(fontSize: 18),
               ),
-               ScopTextField(
-                hintText: 'Description' , controller: NewScreen.descriptionController,
+              ScopTextField(
+                hintText: 'Description',
+                controller: NewScreen.descriptionController,
               ),
-               ScopTextField(
-                hintText: 'Cost', controller: NewScreen.priceController,
+              ScopTextField(
+                hintText: 'Cost',
+                controller: NewScreen.priceController,
                 type: TextInputType.number,
               ),
               TypeAndDate(),
@@ -51,27 +53,35 @@ class _NewScreenState extends State<NewScreen> {
                   style: TextButton.styleFrom(
                       backgroundColor: KPurpleColor, elevation: 0),
                   onPressed: () {
-                    HomeScreen.modeys.add(
-                      Money(
-                        id: Random().nextInt(9999) ,
-                        price: NewScreen.priceController.text,
-                        date: '1403/02/05',
-                        isReceived: NewScreen.groupId == 1 ? true : false,
-                        title: NewScreen.descriptionController.text),
-                        );
+                    //HomeScreen.moneys.add(
+                    Money Item = Money(
+                      id: Random().nextInt(9999),
+                      price: NewScreen.priceController.text,
+                      date: '1403/02/05',
+                      isReceived: NewScreen.groupId == 1 ? true : false,
+                      title: NewScreen.descriptionController.text,
+                    );
+                    if (NewScreen.isEditing) {
+                      HomeScreen.moneys[NewScreen.index] = Item;
+                    } else {
+                       HomeScreen.moneys.add(Item);
+                    }
                       Navigator.pop(context);
                   },
                   child: Text(
-                    'Add',
+                    NewScreen.isEditing ? "Edit" : "Add",
                     style: TextStyle(color: Colors.black87),
                   ),
                 ),
               ),
               Spacer(),
-              ElevatedButton(onPressed: (){
-                Navigator.pop(context,
-                  MaterialPageRoute(builder: (context) => MainScreen()));
-              }, child: Text('back'),),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context,
+                      MaterialPageRoute(builder: (context) => MainScreen()));
+                },
+                child: Text('back'),
+              ),
             ],
           ),
         ),
@@ -126,8 +136,7 @@ class _TypeAndDateState extends State<TypeAndDate> {
             margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
             child: TextButton(
               style: TextButton.styleFrom(
-                  backgroundColor: KPurpleColor,
-                   elevation: 0),
+                  backgroundColor: KPurpleColor, elevation: 0),
               onPressed: () {},
               child: const Text(
                 'Date',
@@ -178,7 +187,10 @@ class ScopTextField extends StatelessWidget {
   final TextEditingController controller;
   final TextInputType type;
   const ScopTextField(
-      {super.key, required this.hintText, this.type = TextInputType.text, required this.controller});
+      {super.key,
+      required this.hintText,
+      this.type = TextInputType.text,
+      required this.controller});
 
   @override
   Widget build(BuildContext context) {

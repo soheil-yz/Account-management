@@ -11,7 +11,7 @@ import 'package:searchbar_animation/searchbar_animation.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
-  static List<Money> modeys = [
+  static List<Money> moneys = [
     Money(
         id: 0,
         price: '2000',
@@ -53,6 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
               NewScreen.descriptionController.text = '';
               NewScreen.priceController.text = '';
               NewScreen.groupId = 0;
+              NewScreen.isEditing = false;
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -76,46 +77,84 @@ class _HomeScreenState extends State<HomeScreen> {
               HeaderWidget(SearchController: SearchController),
               //const Expanded(child: EmptyWight()),
               Expanded(
-                child: HomeScreen.modeys.isEmpty ? EmptyWight() : ListView.builder(
-                    itemCount: HomeScreen.modeys.length,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                          onTap: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) => AlertDialog(
-                                  title: const Text("Are you sure you want to delete it?" , style: TextStyle(fontSize: 15)),
-                                      actions: [
-                                        Padding(
-                                          padding: EdgeInsets.only(top: 20),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              TextButton(
-                                                onPressed: () {
-                                                  setState(() {
-                                                    HomeScreen.modeys
-                                                        .removeAt(index);
+                child: HomeScreen.moneys.isEmpty
+                    ? EmptyWight()
+                    : ListView.builder(
+                        itemCount: HomeScreen.moneys.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                              //!Edit
+                              onDoubleTap: () {
+                                NewScreen.descriptionController.text =
+                                    HomeScreen.moneys[index].title;
+                                NewScreen.priceController.text =
+                                    HomeScreen.moneys[index].price;
+                                NewScreen.groupId =
+                                    HomeScreen.moneys[index].isReceived ? 1 : 2 ;
+                                NewScreen.isEditing = true;
+                                NewScreen.index = index;
+
+
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const NewScreen(),
+                                  ),
+                                ).then((value) {
+                                    setState(() {
+                                    });
+                                });
+                              },
+                              //!Removed
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                          title: const Text(
+                                              "Are you sure you want to delete it?",
+                                              style: TextStyle(fontSize: 15)),
+                                          actions: [
+                                            Padding(
+                                              padding: EdgeInsets.only(top: 20),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        HomeScreen.moneys
+                                                            .removeAt(index);
                                                         Navigator.pop(context);
-                                                  });
-                                                },
-                                                child: Text("YES" , style: TextStyle(color: Colors.black87),),
+                                                      });
+                                                    },
+                                                    child: Text(
+                                                      "YES",
+                                                      style: TextStyle(
+                                                          color:
+                                                              Colors.black87),
+                                                    ),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: Text(
+                                                      "NO",
+                                                      style: TextStyle(
+                                                          color:
+                                                              Colors.black87),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                              TextButton(  
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Text("NO" , style: TextStyle(color: Colors.black87),),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ));
-                          },
-                          child: MyListTileWedget(index: index));
-                    }),
+                                            ),
+                                          ],
+                                        ));
+                              },
+                              child: MyListTileWedget(index: index));
+                        }),
               ),
             ],
           ),
@@ -142,14 +181,14 @@ class MyListTileWedget extends StatelessWidget {
               width: 50,
               height: 50,
               decoration: BoxDecoration(
-                color: HomeScreen.modeys[index].isReceived
+                color: HomeScreen.moneys[index].isReceived
                     ? KGreenColor
                     : KRedColor,
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Center(
                 child: Icon(
-                  HomeScreen.modeys[index].isReceived
+                  HomeScreen.moneys[index].isReceived
                       ? Icons.add
                       : Icons.remove_outlined,
                   color: Colors.white,
@@ -159,7 +198,7 @@ class MyListTileWedget extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 15),
-              child: Text(HomeScreen.modeys[index].title),
+              child: Text(HomeScreen.moneys[index].title),
             ),
             const Spacer(),
             Column(
@@ -171,12 +210,12 @@ class MyListTileWedget extends StatelessWidget {
                       style: TextStyle(fontSize: 15, color: KRedColor),
                     ),
                     Text(
-                      HomeScreen.modeys[index].price,
+                      HomeScreen.moneys[index].price,
                       style: TextStyle(fontSize: 15, color: KRedColor),
                     ),
                   ],
                 ),
-                Text(HomeScreen.modeys[index].date),
+                Text(HomeScreen.moneys[index].date),
               ],
             ),
           ],
