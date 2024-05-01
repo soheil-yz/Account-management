@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:money_managment/Constans.dart';
 import 'package:money_managment/models/Money.dart';
 import 'package:money_managment/screens/Home_screen.dart';
@@ -19,6 +20,7 @@ class NewScreen extends StatefulWidget {
 }
 
 class _NewScreenState extends State<NewScreen> {
+  Box<Money> hiveBox = Hive.box<Money>('moneyBox');
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -64,7 +66,8 @@ class _NewScreenState extends State<NewScreen> {
                     if (NewScreen.isEditing) {
                       HomeScreen.moneys[NewScreen.index] = Item;
                     } else {
-                       HomeScreen.moneys.add(Item);
+                      //  HomeScreen.moneys.add(Item);    
+                       hiveBox.add(Item);
                     }
                       Navigator.pop(context);
                   },
