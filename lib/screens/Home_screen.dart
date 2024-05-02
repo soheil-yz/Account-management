@@ -89,6 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     builder: (context) => const NewScreen(),
                                   ),
                                 ).then((value) {
+                                  
                                   MyApp.getData();
                                     setState(() {
                                     });

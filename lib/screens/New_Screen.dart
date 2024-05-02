@@ -65,6 +65,7 @@ class _NewScreenState extends State<NewScreen> {
                     );
                     if (NewScreen.isEditing) {
                       HomeScreen.moneys[NewScreen.index] = Item;
+                      hiveBox.putAt(NewScreen.index, Item);
                     } else {
                       //  HomeScreen.moneys.add(Item);    
                        hiveBox.add(Item);
