@@ -65,10 +65,10 @@ class _HomeScreenState extends State<HomeScreen> {
               HeaderWidget(SearchController: SearchController),
               //const Expanded(child: EmptyWight()),
               Expanded(
-                child: HomeScreen.moneys.isEmpty
+                child: hiveBox.values.isEmpty
                     ? EmptyWight()
                     : ListView.builder(
-                        itemCount: HomeScreen.moneys.length,
+                        itemCount: hiveBox.values.length,
                         itemBuilder: (context, index) {
                           return GestureDetector(
                               //!Edit
