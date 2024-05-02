@@ -16,7 +16,7 @@ class NewScreen extends StatefulWidget {
   static TextEditingController priceController = TextEditingController();
   static bool isEditing = false;
   @override
-  State<NewScreen> createState() => _NewScreenState();
+  _NewScreenState createState() => _NewScreenState();
 }
 
 class _NewScreenState extends State<NewScreen> {

@@ -7,16 +7,17 @@ import 'package:hive_flutter/hive_flutter.dart';
 void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(MoneyAdapter());
-  await Hive.openBox('moneyBox');
+  await Hive.openBox<Money>('moneyBox');
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   
   const MyApp({super.key});
+
   static void getData(){
     HomeScreen.moneys.clear();
-    Box<Money>hiveBox = Hive.box<Money>('moneyBox');
+    Box<Money> hiveBox = Hive.box<Money>('moneyBox');
     for (var element in hiveBox.values){
       HomeScreen.moneys.add(element);
     }
@@ -31,3 +32,5 @@ class MyApp extends StatelessWidget {
     );
   }
 } 
+
+// flutter run -d chrome --web-port=8080 --web-hostname=127.0.0.1

@@ -4,35 +4,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hive/hive.dart';
 import 'package:money_managment/Constans.dart';
+import 'package:money_managment/main.dart';
 import 'package:money_managment/models/Money.dart';
 import 'package:money_managment/screens/New_Screen.dart';
 import 'package:searchbar_animation/searchbar_animation.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
-  static List<Money> moneys = [
-    Money(
-        id: 0,
-        price: '2000',
-        date: '2024/27',
-        isReceived: false,
-        title: 'Univercity'),
-    Money(
-        id: 1,
-        price: '2000',
-        date: '2024/27',
-        isReceived: true,
-        title: 'Programming'),
-    Money(
-        id: 2, price: '3000', date: '2024/22', isReceived: false, title: 'gym'),
-    Money(
-        id: 3,
-        price: '44000',
-        date: '2024/21',
-        isReceived: true,
-        title: 'handing out'),
-  ];
+  static List<Money> moneys = [];
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -40,6 +21,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController SearchController = TextEditingController();
+    Box<Money> hiveBox = Hive.box<Money>('moneyBox');
+
+  @override
+  void initState() {
+    MyApp.getData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,13 +47,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 MaterialPageRoute(
                   builder: (context) => NewScreen(),
                 ),
-              ).then(
-                (value) => setState(
+              ).then((value){ 
+                setState(
                   () {
-                    print('Refresh');
+                    MyApp.getData();
                   },
-                ),
-              );
+                );
+            });
             },
             child: const Icon(
               Icons.add,
@@ -101,6 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     builder: (context) => const NewScreen(),
                                   ),
                                 ).then((value) {
+                                  MyApp.getData();
                                     setState(() {
                                     });
                                 });
@@ -124,8 +113,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   TextButton(
                                                     onPressed: () {
                                                       setState(() {
-                                                        HomeScreen.moneys
-                                                            .removeAt(index);
+                                                          hiveBox.deleteAt(index);
+                                                          MyApp.getData();
+                                                        // HomeScreen.moneys
+                                                        //     .removeAt(index);
                                                         Navigator.pop(context);
                                                       });
                                                     },
