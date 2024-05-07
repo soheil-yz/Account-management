@@ -170,6 +170,13 @@ class _HomeScreenState extends State<HomeScreen> {
               secondaryButtonWidget: Icon(Icons.search_off),
               buttonWidget: Icon(Icons.search),
               buttonElevation: 0,
+              onCollapseComplete: (){
+                MyApp.getData();
+                SearchController.text = '';
+                setState(() {
+                  
+                });
+              },
               onFieldSubmitted: (String text) {
                 List<Money> result = hiveBox.values
                     .where((element) =>
@@ -177,11 +184,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         element.date.contains(text))
                     .toList();
                 HomeScreen.moneys.clear();
-                setState(() {
-                  for (var item in result) {
-                    HomeScreen.moneys.add(item);
-                  }
-                });
+                setState(
+                  () {
+                    for (var item in result) {
+                      HomeScreen.moneys.add(item);
+                    }
+                  },
+                );
               },
             ),
           ),
@@ -255,8 +264,6 @@ class MyListTileWedget extends StatelessWidget {
     );
   }
 }
-
-
 
 class EmptyWight extends StatelessWidget {
   const EmptyWight({super.key});
