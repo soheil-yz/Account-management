@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:money_managment/Constans.dart';
+import 'package:money_managment/main.dart';
 import 'package:money_managment/models/Money.dart';
 import 'package:money_managment/screens/Home_screen.dart';
 import 'package:money_managment/screens/main_screen.dart';
@@ -64,13 +65,20 @@ class _NewScreenState extends State<NewScreen> {
                       title: NewScreen.descriptionController.text,
                     );
                     if (NewScreen.isEditing) {
-                      HomeScreen.moneys[NewScreen.index] = Item;
-                      hiveBox.putAt(NewScreen.index, Item);
+                      int Id = 0;
+                      MyApp.getData();
+                      for (int i = 0; i < hiveBox.values.length; i++) {
+                        if (hiveBox.values.elementAt(i).id == NewScreen.index) {
+                          Id = i;
+                        }
+                      }
+                      //HomeScreen.moneys[NewScreen.index] = Item;
+                      hiveBox.putAt(Id, Item);
                     } else {
-                      //  HomeScreen.moneys.add(Item);    
-                       hiveBox.add(Item);
+                      //  HomeScreen.moneys.add(Item);
+                      hiveBox.add(Item);
                     }
-                      Navigator.pop(context);
+                    Navigator.pop(context);
                   },
                   child: Text(
                     NewScreen.isEditing ? "Edit" : "Add",

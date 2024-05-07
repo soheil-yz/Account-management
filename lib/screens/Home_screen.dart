@@ -85,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               NewScreen.groupId =
                                   HomeScreen.moneys[index].isReceived ? 1 : 2;
                               NewScreen.isEditing = true;
-                              NewScreen.index = index;
+                              NewScreen.index = HomeScreen.moneys[index].id;
 
                               Navigator.push(
                                 context,
