@@ -256,59 +256,7 @@ class MyListTileWedget extends StatelessWidget {
   }
 }
 
-// class HeaderWidget extends StatefulWidget {
-//   HeaderWidget({
-//     super.key,
-//     required this.SearchController,
-//   });
 
-//   final TextEditingController SearchController;
-
-//   @override
-//   State<HeaderWidget> createState() => _HeaderWidgetState();
-// }
-
-// class _HeaderWidgetState extends State<HeaderWidget> {
-//   Box<Money> hiveBox = Hive.box<Money>('moneyBox');
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//   padding: const EdgeInsets.only(right: 20, top: 20, left: 5),
-//   child: Row(
-//     children: [
-//       Expanded(
-//         child: SearchBarAnimation(
-//           textEditingController: widget.SearchController,
-//           isOriginalAnimation: false,
-//           trailingWidget: Icon(Icons.search),
-//           secondaryButtonWidget: Icon(Icons.search_off),
-//           buttonWidget: Icon(Icons.search),
-//           buttonElevation: 0,
-//           onFieldSubmitted: (String text) {
-//             List<Money> result = hiveBox.values
-//                 .where((element) =>
-//                     element.title.contains(text) ||
-//                     element.date.contains(text))
-//                 .toList();
-//                 HomeScreen.moneys.clear();
-//                 setState(() {
-//                   for (var item in result){
-//                     HomeScreen.moneys.add(item);
-//                   }
-//                 });
-//           },
-//         ),
-//       ),
-//       const SizedBox(
-//         width: 10,
-//       ),
-//       const Text('Transactions'),
-//     ],
-//   ),
-// );
-//   }
-// }
 
 class EmptyWight extends StatelessWidget {
   const EmptyWight({super.key});
