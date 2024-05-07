@@ -8,6 +8,7 @@ import 'package:money_managment/main.dart';
 import 'package:money_managment/models/Money.dart';
 import 'package:money_managment/screens/Home_screen.dart';
 import 'package:money_managment/screens/main_screen.dart';
+import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
 class NewScreen extends StatefulWidget {
   const NewScreen({super.key});
@@ -16,6 +17,7 @@ class NewScreen extends StatefulWidget {
   static TextEditingController descriptionController = TextEditingController();
   static TextEditingController priceController = TextEditingController();
   static bool isEditing = false;
+  static String Date = 'Date';
   @override
   _NewScreenState createState() => _NewScreenState();
 }
@@ -52,37 +54,39 @@ class _NewScreenState extends State<NewScreen> {
               ),
               SizedBox(
                 width: double.infinity,
-                child: ElevatedButton(
-                  style: TextButton.styleFrom(
-                      backgroundColor: KPurpleColor, elevation: 0),
-                  onPressed: () {
-                    //HomeScreen.moneys.add(
-                    Money Item = Money(
-                      id: Random().nextInt(9999),
-                      price: NewScreen.priceController.text,
-                      date: '1403/02/05',
-                      isReceived: NewScreen.groupId == 1 ? true : false,
-                      title: NewScreen.descriptionController.text,
-                    );
-                    if (NewScreen.isEditing) {
-                      int Id = 0;
-                      MyApp.getData();
-                      for (int i = 0; i < hiveBox.values.length; i++) {
-                        if (hiveBox.values.elementAt(i).id == NewScreen.index) {
-                          Id = i;
+                child: Expanded(
+                  child: ElevatedButton(
+                    style: TextButton.styleFrom(
+                        backgroundColor: KPurpleColor, elevation: 0),
+                    onPressed: () {
+                      //HomeScreen.moneys.add(
+                      Money Item = Money(
+                        id: Random().nextInt(9999),
+                        price: NewScreen.priceController.text,
+                        date: NewScreen.Date,
+                        isReceived: NewScreen.groupId == 1 ? true : false,
+                        title: NewScreen.descriptionController.text,
+                      );
+                      if (NewScreen.isEditing) {
+                        int Id = 0;
+                        MyApp.getData();
+                        for (int i = 0; i < hiveBox.values.length; i++) {
+                          if (hiveBox.values.elementAt(i).id == NewScreen.index) {
+                            Id = i;
+                          }
                         }
+                        //HomeScreen.moneys[NewScreen.index] = Item;
+                        hiveBox.putAt(Id, Item);
+                      } else {
+                        //  HomeScreen.moneys.add(Item);
+                        hiveBox.add(Item);
                       }
-                      //HomeScreen.moneys[NewScreen.index] = Item;
-                      hiveBox.putAt(Id, Item);
-                    } else {
-                      //  HomeScreen.moneys.add(Item);
-                      hiveBox.add(Item);
-                    }
-                    Navigator.pop(context);
-                  },
-                  child: Text(
-                    NewScreen.isEditing ? "Edit" : "Add",
-                    style: TextStyle(color: Colors.black87),
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      NewScreen.isEditing ? "Edit" : "Add",
+                      style: TextStyle(color: Colors.black87),
+                    ),
                   ),
                 ),
               ),
@@ -118,42 +122,57 @@ class _TypeAndDateState extends State<TypeAndDate> {
       children: [
         Padding(
           padding: const EdgeInsets.all(5.0),
-          child: MyRadioButton(
-            value: 1,
-            text: "Payment",
-            groupValue: NewScreen.groupId,
-            onChanged: (value) {
-              setState(() {
-                NewScreen.groupId = value!;
-              });
-            },
+          child: Expanded(
+            child: MyRadioButton(
+              value: 1,
+              text: "Payment",
+              groupValue: NewScreen.groupId,
+              onChanged: (value) {
+                setState(() {
+                  NewScreen.groupId = value!;
+                });
+              },
+            ),
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(5.0),
-          child: MyRadioButton(
-            value: 2,
-            text: "Receipt",
-            groupValue: NewScreen.groupId,
-            onChanged: (value) {
-              setState(() {
-                NewScreen.groupId = value!;
-              });
-            },
+          child: Expanded(
+            child: MyRadioButton(
+              value: 2,
+              text: "Receipt",
+              groupValue: NewScreen.groupId,
+              onChanged: (value) {
+                setState(() {
+                  NewScreen.groupId = value!;
+                });
+              },
+            ),
           ),
         ),
         Center(
           child: Container(
-            width: 90,
+            width: 100,
             margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-            child: TextButton(
-              style: TextButton.styleFrom(
-                  backgroundColor: KPurpleColor, elevation: 0),
-              onPressed: () {},
-              child: const Text(
-                'Date',
-                style: TextStyle(
-                  color: Colors.black87,
+            child: Expanded(
+              child: TextButton(
+                style: TextButton.styleFrom(
+                    backgroundColor: KPurpleColor, elevation: 0),
+                onPressed: () async {
+                  var pickedDate = await showPersianDatePicker(
+                      context: context,
+                      initialDate: Jalali.now(),
+                      firstDate: Jalali(1403),
+                      lastDate: Jalali(1499));
+                      setState(() {
+                        NewScreen.Date = pickedDate!.year.toString() +'/'+  pickedDate.month.toString() +'/'+  pickedDate.day.toString();
+                      });
+                },
+                child: Text(
+                  NewScreen.Date,
+                  style: TextStyle(
+                    color: Colors.black87,
+                  ),
                 ),
               ),
             ),

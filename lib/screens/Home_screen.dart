@@ -40,6 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: KPurpleColor,
           elevation: 0,
           onPressed: () {
+            NewScreen.Date = 'Date';
             NewScreen.descriptionController.text = '';
             NewScreen.priceController.text = '';
             NewScreen.groupId = 0;
@@ -78,6 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           return GestureDetector(
                             //!Edit
                             onDoubleTap: () {
+                              NewScreen.Date = HomeScreen.moneys[index].date;
                               NewScreen.descriptionController.text =
                                   HomeScreen.moneys[index].title;
                               NewScreen.priceController.text =
@@ -170,12 +172,10 @@ class _HomeScreenState extends State<HomeScreen> {
               secondaryButtonWidget: Icon(Icons.search_off),
               buttonWidget: Icon(Icons.search),
               buttonElevation: 0,
-              onCollapseComplete: (){
+              onCollapseComplete: () {
                 MyApp.getData();
                 SearchController.text = '';
-                setState(() {
-                  
-                });
+                setState(() {});
               },
               onFieldSubmitted: (String text) {
                 List<Money> result = hiveBox.values
